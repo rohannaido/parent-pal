@@ -14,17 +14,18 @@ datasource db {
 }
 
 model User {
-  id           String        @id @default(cuid())
-  email        String        @unique
-  name         String?
-  password     String?
-  token        String?
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  role         String        @default("child")
-  reminders    Reminder[]
-  childParents ChildParent[] @relation("ChildToParent")
-  parentChilds ChildParent[] @relation("ParentToChild")
+  id                String        @id @default(cuid())
+  email             String        @unique
+  name              String?
+  password          String?
+  token             String?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  role              String        @default("child")
+  notificationToken String?
+  reminders         Reminder[]
+  childParents      ChildParent[] @relation("ChildToParent")
+  parentChilds      ChildParent[] @relation("ParentToChild")
 }
 
 model ChildParent {
@@ -41,6 +42,9 @@ model Reminder {
   content   String
   userId    String
   user      User     @relation(fields: [userId], references: [id])
+  date      String
+  time      String
+  sent      Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

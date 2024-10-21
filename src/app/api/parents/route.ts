@@ -36,6 +36,7 @@ export async function POST(req: NextRequest) {
         data: {
             name,
             email,
+            role: "parent",
         },
     });
 

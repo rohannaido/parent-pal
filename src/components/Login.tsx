@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,21 +10,37 @@ import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 export default function Login() {
-    const session = useSession();
+    const { data: session, status } = useSession();
     const router = useRouter();
 
-    if (session.status === "authenticated") {
-        router.push("/");
-        return;
-    }
+    useEffect(() => {
+        if (status === "authenticated") {
+            router.push("/");
+        }
+    }, [status, router]);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        await signIn("credentials", { email, password, redirect: false });
-        router.refresh();
+        setError('');
+        const result = await signIn("credentials", {
+            email,
+            password,
+            redirect: false
+        });
+        if (result?.error) {
+            setError(result.error);
+        } else {
+            router.push("/");
+        }
     };
+
+    if (status === "loading") {
+        return <div>Loading...</div>;
+    }
 
     return (
         <Card className="w-full max-w-md">
