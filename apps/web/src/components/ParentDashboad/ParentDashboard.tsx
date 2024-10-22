@@ -40,8 +40,6 @@ export default function ParentDashboard() {
                 method: "POST",
                 body: JSON.stringify({ notificationToken: fcmToken }),
             });
-            const data = await response.json();
-            console.log(data);
         };
         saveFcmToken();
     }, [fcmToken, session]);
