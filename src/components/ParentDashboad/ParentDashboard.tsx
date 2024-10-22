@@ -8,29 +8,43 @@ import { useSession } from "next-auth/react";
 import { getMessaging, onMessage } from "firebase/messaging";
 import firebaseApp from "@/utils/firebase/firebase";
 import useFcmToken from "@/utils/hooks/useFcmToken";
+import { useToast } from "@/hooks/use-toast";
 
 export default function ParentDashboard() {
-
     const { fcmToken, notificationPermissionStatus } = useFcmToken();
-    // Use the token as needed
-    fcmToken && console.log('FCM token:', fcmToken);
+    const { toast } = useToast();
+    const [reminders, setReminders] = useState<Reminder[]>([]);
+    const session = useSession();
 
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
         if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
             const messaging = getMessaging(firebaseApp);
             const unsubscribe = onMessage(messaging, (payload) => {
-                console.log('Foreground push notification received:', payload);
+                toast({
+                    title: `New Reminder ${payload.notification?.title}`,
+                    description: payload.notification?.body,
+                });
             });
             return () => {
-                unsubscribe(); // Unsubscribe from the onMessage event
+                unsubscribe();
             };
         }
     }, []);
 
-    const [reminders, setReminders] = useState<Reminder[]>([]);
-    const session = useSession();
+    useEffect(() => {
+        if (!fcmToken) return;
+        if (!session) return;
+        const saveFcmToken = async () => {
+            const response = await fetch(`/api/users/${(session as any)?.data?.user?.id}/firebase-token`, {
+                method: "POST",
+                body: JSON.stringify({ notificationToken: fcmToken }),
+            });
+            const data = await response.json();
+            console.log(data);
+        };
+        saveFcmToken();
+    }, [fcmToken, session]);
 
     useEffect(() => {
         fetchReminders();

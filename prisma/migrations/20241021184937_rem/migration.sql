@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Reminder" ALTER COLUMN "date" DROP NOT NULL,
+ALTER COLUMN "time" DROP NOT NULL;

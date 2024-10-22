@@ -3,13 +3,15 @@ import { sendNotification } from "@/services/notificationService";
 
 export async function sendReminders() {
     const now = new Date();
+    console.log(now.toISOString().split('T')[0]);
+    console.log(now.toTimeString().split(' ')[0]);
+    // const todayDate = now.toISOString().split('T')[0];
     const reminders = await prisma.reminder.findMany({
         where: {
             sent: false,
-            // date: now.toISOString().split('T')[0],
-            // time: {
-            //     lte: now.toTimeString().split(' ')[0]
-            // }
+            dateTime: {
+                lte: now
+            }
         }
     });
 

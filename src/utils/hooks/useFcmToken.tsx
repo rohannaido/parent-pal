@@ -21,7 +21,7 @@ const useFcmToken = () => {
                     if (permission === 'granted') {
                         const currentToken = await getToken(messaging, {
                             vapidKey:
-                                'your_vapid_key',
+                                'BNl6_1cvugehSOjuF4IcxX25dS-OAOuXNdxeDdMHSk6w2WYGZSyadMGoQn9yByrrONVJwRoTIO_4X-UMmE_KEG0',
                         });
                         if (currentToken) {
                             setToken(currentToken);

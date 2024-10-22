@@ -28,12 +28,11 @@ export default function UserDashboard() {
         fetchReminders();
     }, [selectedParent]);
     const setReminderForParent = async () => {
-        console.log(selectedParent, reminder, date, time);
         if (selectedParent && reminder && date && time) {
             const reminderDateTime = new Date(date);
             const [hours, minutes] = time.split(':');
-            reminderDateTime.setHours(parseInt(hours, 10), parseInt(minutes, 10));
-
+            reminderDateTime.setHours(parseInt(hours), parseInt(minutes));
+            const dateNew = reminderDateTime.toISOString();
             try {
                 const response = await fetch("/api/reminders", {
                     method: "POST",
@@ -41,11 +40,9 @@ export default function UserDashboard() {
                         userId: selectedParent.id,
                         title: reminder,
                         content: reminder,
-                        date: reminderDateTime.toISOString().split('T')[0],
-                        time: reminderDateTime.toISOString().split('T')[1].split('.')[0].slice(0, 5),
+                        dateTime: dateNew,
                     }),
                 });
-                console.log(response);
                 setReminder("");
                 setDate(undefined);
                 setTime("");
@@ -59,45 +56,47 @@ export default function UserDashboard() {
     return (
         <>
             <AppBar />
-            <div className="min-h-screen">
+            <div className="min-h-screen bg-gray-900 text-white">
                 <ParentCards selectedParent={selectedParent} setSelectedParent={setSelectedParent} />
                 <div className="flex justify-center">
-                    <div className="bg-white p-8 rounded-lg w-full max-w-md space-y-6">
+                    <div className="bg-gray-800 p-8 rounded-lg w-full max-w-md space-y-6">
                         <div className="space-y-4">
                             <h2 className="text-xl font-semibold">Add Reminder</h2>
                             <Input
                                 value={reminder}
                                 onChange={(e) => setReminder(e.target.value)}
                                 placeholder="Enter reminder"
+                                className="bg-gray-700 text-white placeholder-gray-400"
                             />
                             <div className="flex space-x-2">
                                 <Popover>
                                     <PopoverTrigger asChild>
-                                        <Button variant="outline" className="w-[240px] justify-start text-left font-normal">
+                                        <Button variant="outline" className="w-[240px] justify-start text-left font-normal bg-gray-700 text-white border-gray-600">
                                             <CalendarIcon className="mr-2 h-4 w-4" />
                                             {date ? format(date, "PPP") : <span>Pick a date</span>}
                                         </Button>
                                     </PopoverTrigger>
-                                    <PopoverContent className="w-auto p-0">
+                                    <PopoverContent className="w-auto p-0 bg-gray-800 border-gray-700">
                                         <Calendar
                                             mode="single"
                                             selected={date}
                                             onSelect={setDate}
                                             initialFocus
+                                            className="bg-gray-800 text-white"
                                         />
                                     </PopoverContent>
                                 </Popover>
                                 <div className="flex items-center space-x-2">
-                                    <Clock className="h-4 w-4" />
+                                    <Clock className="h-4 w-4 text-white" />
                                     <Input
                                         type="time"
                                         value={time}
                                         onChange={(e) => setTime(e.target.value)}
-                                        className="w-[120px]"
+                                        className="w-[120px] bg-gray-700 text-white"
                                     />
                                 </div>
                             </div>
-                            <Button onClick={setReminderForParent} className="w-full">Set Reminder</Button>
+                            <Button onClick={setReminderForParent} className="w-full bg-blue-600 hover:bg-blue-700 text-white">Set Reminder</Button>
                         </div>
                     </div>
                 </div>

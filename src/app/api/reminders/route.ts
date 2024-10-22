@@ -6,15 +6,14 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get('userId');
     const reminders = await prisma.reminder.findMany({ where: { userId: userId ?? "" } });
-    return NextResponse.json({ reminders });
+    return NextResponse.json({ reminders: reminders });
 }
 
 const reminderSchema = z.object({
     userId: z.string(),
     title: z.string(),
     content: z.string(),
-    date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format"),
-    time: z.string().regex(/^\d{2}:\d{2}$/, "Time must be in HH:MM format")
+    dateTime: z.string().datetime(),
 });
 
 export async function POST(request: NextRequest) {
@@ -24,7 +23,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
     }
 
-    const { userId, title, content, date, time } = parsedBody.data;
-    const newReminder = await prisma.reminder.create({ data: { userId, title, content, date, time } });
-    return NextResponse.json({ newReminder });
+    let { userId, title, content, dateTime } = parsedBody.data;
+    await prisma.reminder.create({ data: { userId, title, content, dateTime } });
+    return NextResponse.json({});
 }
