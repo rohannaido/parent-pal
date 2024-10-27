@@ -1,9 +1,13 @@
 
-import { applicationDefault, initializeApp } from 'firebase-admin/app';
+import { initializeApp, cert } from 'firebase-admin/app';
+
+const serviceAccount = JSON.parse(
+    process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string
+);
 
 const firebaseSingleton = () => {
     return initializeApp({
-        credential: applicationDefault()
+        credential: cert(serviceAccount),
     });
 };
 
