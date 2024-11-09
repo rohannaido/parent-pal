@@ -3,10 +3,13 @@ import express from "express";
 const app = express();
 
 const cronJob = async () => {
+    console.log("CALLING REMINDER JOB")
     try {
+
         const response = await fetch('http://localhost:3000/api/reminders/job', {
             method: 'POST',
         });
+
     } catch (error) {
         console.error('Error hitting endpoint:', error);
     }
