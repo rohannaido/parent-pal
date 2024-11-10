@@ -44,14 +44,14 @@ export default function ParentCards({ selectedParent, setSelectedParent }: { sel
         setParents(data.parents);
     };
 
-    return <div className="flex items-center justify-center gap-2 max-w-3xl mx-auto mt-4">
+    return <div className="flex items-center justify-center gap-2 max-w-3xl mx-auto mb-4">
         <div className="flex flex-wrap gap-2">
             {parents.map((parent) => (
                 <Button
                     key={parent.id}
                     onClick={() => setSelectedParent(parent)}
                     variant="outline"
-                    className={`flex-grow max-w-[100px] min-w-[100px] h-24 ${selectedParent?.id === parent.id ? "border-2 border-blue-500" : ""}`}
+                    className={`flex-grow max-w-[100px] min-w-[100px] h-24 bg-white dark:bg-gray-800 ${selectedParent?.id === parent.id ? "border-2 border-blue-500" : ""}`}
                 >
                     <div className="flex items-center justify-center h-full text-xl">
                         {parent.name}
@@ -64,7 +64,7 @@ export default function ParentCards({ selectedParent, setSelectedParent }: { sel
             {!showAddParentForm ? (
                 <Button
                     onClick={() => setShowAddParentForm(true)}
-                    className={`w-full text-4xl ${parents?.length ? "" : "h-28"}`}
+                    className={`w-full text-4xl ${parents?.length ? "" : "h-28"} bg-white dark:bg-gray-800`}
                     variant="outline"
                 >
                     + {parents?.length ? "" : <span className="text-2xl font-semibold">Parent</span>}

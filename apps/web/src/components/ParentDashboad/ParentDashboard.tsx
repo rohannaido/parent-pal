@@ -57,7 +57,7 @@ export default function ParentDashboard() {
     return (
         <>
             <AppBar />
-            <div className="min-h-screen">
+            <div className="min-h-screen p-4 bg-white dark:bg-gray-900">
                 <ReminderList reminders={reminders} />
             </div>
         </>

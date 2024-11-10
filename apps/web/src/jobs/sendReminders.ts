@@ -11,7 +11,20 @@ export type ReminderWithUser = Reminder & {
 };
 
 export async function sendReminders() {
+    console.log("SENDING REMINDERS")
     const now = new Date();
+
+    const remindersCheck = await prisma.reminder.findMany({
+        where: {
+            sent: false,
+            dateTime: {
+                lte: now
+            }
+        },
+    });
+
+    console.log("REMINDERS CHECK", remindersCheck)
+
     const reminders = await prisma.reminder.findMany({
         where: {
             sent: false,
