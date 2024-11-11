@@ -1,4 +1,4 @@
-import prisma from "@/db";
+import prisma from "@parent-pal/database";
 import bcrypt from "bcrypt";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";

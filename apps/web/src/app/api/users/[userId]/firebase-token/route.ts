@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/db/index";
+import prisma from "@parent-pal/database";
 import { z } from "zod";
 
 const notificationTokenSchema = z.object({

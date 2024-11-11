@@ -1,20 +1,21 @@
 {
-  "name": "@parent-pal/cron",
+  "name": "@parent-pal/database",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.21.1"
-  },
   "devDependencies": {
-    "@types/express": "^5.0.0"
+    "@types/node": "^22.9.0",
+    "prisma": "^5.22.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0"
   }
 }

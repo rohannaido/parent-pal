@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import { SignJWT, importJWK, JWTPayload } from "jose";
 import CredentialsProvider from "next-auth/providers/credentials";
-import db from "@/db";
+import db from "@parent-pal/database";
 
 const generateJWT = async (payload: JWTPayload) => {
     const secret = process.env.JWT_SECRET || "secret";

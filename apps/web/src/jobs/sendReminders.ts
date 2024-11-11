@@ -1,4 +1,4 @@
-import prisma from "@/db/index";
+import prisma from "@parent-pal/database";
 import { sendNotification } from "@/services/notificationService";
 import { Reminder } from "@prisma/client";
 
