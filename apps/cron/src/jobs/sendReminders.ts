@@ -1,6 +1,6 @@
 import prisma from "@parent-pal/database";
-import { sendNotification } from "@/services/notificationService";
-import { Reminder } from "@prisma/client";
+import { Reminder } from "@parent-pal/database";
+import { sendNotification } from "../services/notificationService";
 
 export type ReminderWithUser = Reminder & {
     user: {

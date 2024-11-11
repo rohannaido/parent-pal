@@ -1,25 +1,20 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from "express";
+import { sendReminders } from "./jobs/sendReminders";
 
 const app = express();
+const PORT = process.env.PORT || 4000;
 
 const cronJob = async () => {
     console.log("CALLING REMINDER JOB")
-    try {
-
-        const response = await fetch('http://localhost:3000/api/reminders/job', {
-            method: 'POST',
-        });
-
-        console.log("response", response);
-
-    } catch (error) {
-        console.error('Error hitting endpoint:', error);
-    }
+    await sendReminders();
 };
 
 // setInterval(cronJob, 5 * 60 * 1000);
 setInterval(cronJob, 5 * 1000);
 
-app.listen(4000, () => {
-    console.log("Server is running on port 4000");
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
