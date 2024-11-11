@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
+import Link from 'next/link'
+import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
     email: z.string().email({ message: "Invalid email address" }),
@@ -25,6 +27,7 @@ const formSchema = z.object({
 })
 
 export default function SignUp() {
+    const { toast } = useToast();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -34,23 +37,38 @@ export default function SignUp() {
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    async function onSubmit(values: z.infer<typeof formSchema>) {
         // TODO: Add signup logic here
         console.log(values)
-        fetch("/api/auth/signup", {
-            method: "POST",
-            body: JSON.stringify(values),
-        })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data)
+        try {
+            const response = await fetch("/api/auth/signup", {
+                method: "POST",
+                body: JSON.stringify(values),
             })
+            if (response.ok) {
+                toast({
+                    title: "Success",
+                    description: "Account created successfully",
+                });
+            } else {
+                toast({
+                    variant: "destructive",
+                    title: "Error",
+                    description: response.statusText || "Something went wrong",
+                });
+            }
+        } catch (error: any) {
+            toast({
+                title: "Error",
+                description: error?.message || "Something went wrong",
+            });
+        }
     }
 
     return (
-        <Card className="w-full max-w-md">
-            <CardHeader>
-                <CardTitle>Sign Up</CardTitle>
+        <Card className="w-full max-w-md bg-card bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
+            <CardHeader className="space-y-1">
+                <CardTitle className="text-2xl font-bold tracking-tight">Sign Up</CardTitle>
                 <CardDescription>Create a new account</CardDescription>
             </CardHeader>
             <CardContent>
@@ -63,7 +81,11 @@ export default function SignUp() {
                                 <FormItem>
                                     <FormLabel>Email</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Enter your email" {...field} />
+                                        <Input
+                                            className="bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 border-gray-200 dark:border-gray-600"
+                                            placeholder="Enter your email"
+                                            {...field}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -76,7 +98,12 @@ export default function SignUp() {
                                 <FormItem>
                                     <FormLabel>Password</FormLabel>
                                     <FormControl>
-                                        <Input type="password" placeholder="Enter your password" {...field} />
+                                        <Input
+                                            className="bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 border-gray-200 dark:border-gray-600"
+                                            type="password"
+                                            placeholder="Enter your password"
+                                            {...field}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -89,13 +116,24 @@ export default function SignUp() {
                                 <FormItem>
                                     <FormLabel>Confirm Password</FormLabel>
                                     <FormControl>
-                                        <Input type="password" placeholder="Confirm your password" {...field} />
+                                        <Input
+                                            className="bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 border-gray-200 dark:border-gray-600"
+                                            type="password"
+                                            placeholder="Confirm your password"
+                                            {...field}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                         <Button type="submit" className="w-full">Sign Up</Button>
+                        <div className="mt-4 text-center text-sm text-muted-foreground">
+                            <p>Already have an account?</p>
+                            <Link href="/login" passHref>
+                                <Button variant="link" className="mt-2 text-primary">Log In</Button>
+                            </Link>
+                        </div>
                     </form>
                 </Form>
             </CardContent>
