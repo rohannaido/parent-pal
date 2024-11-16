@@ -10,7 +10,7 @@ import { CalendarIcon, Clock } from "lucide-react";
 import AppBar from "../AppBar";
 import ParentCards from "./ParentCards";
 import ReminderList from "./ReminderList";
-import { Reminder, User } from "@prisma/client";
+import { Reminder, User } from "@parent-pal/database";
 
 export default function UserDashboard() {
     const [reminder, setReminder] = useState("");

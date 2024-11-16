@@ -12,7 +12,7 @@ import { Eye, EyeOff } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
 export default function Login() {
-    const { data: session, status } = useSession();
+    const { status } = useSession();
     const router = useRouter();
     const { toast } = useToast();
 
@@ -24,6 +24,7 @@ export default function Login() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
 

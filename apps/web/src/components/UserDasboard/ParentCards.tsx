@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { X } from "lucide-react";
-import { User } from "@prisma/client";
+import { User } from "@parent-pal/database";
 
 export default function ParentCards({ selectedParent, setSelectedParent }: { selectedParent: User | null, setSelectedParent: (parent: User | null) => void }) {
     const [parents, setParents] = useState<User[]>([]);

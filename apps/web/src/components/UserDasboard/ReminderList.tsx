@@ -1,6 +1,6 @@
 "use client";
 
-import { User, Reminder } from "@prisma/client";
+import { Reminder } from "@parent-pal/database";
 
 export default function ReminderList({ reminders }: { reminders: Reminder[] }) {
     return (

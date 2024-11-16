@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
     }
 
-    let { userId, title, content, dateTime } = parsedBody.data;
+    const { userId, title, content, dateTime } = parsedBody.data;
     await prisma.reminder.create({ data: { userId, title, content, dateTime } });
     return NextResponse.json({});
 }

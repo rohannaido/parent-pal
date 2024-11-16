@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react";
 import AppBar from "../AppBar";
 import ReminderList from "../UserDasboard/ReminderList";
-import { Reminder } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { getMessaging, onMessage } from "firebase/messaging";
 import firebaseApp from "@/utils/firebase/firebase";
 import useFcmToken from "@/utils/hooks/useFcmToken";
 import { useToast } from "@/hooks/use-toast";
+import { Reminder } from "@parent-pal/database";
 
 export default function ParentDashboard() {
     const { fcmToken, notificationPermissionStatus } = useFcmToken();
