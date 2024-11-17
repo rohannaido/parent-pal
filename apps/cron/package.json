@@ -22,7 +22,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "firebase-admin": "^12.7.0",
-    "@parent-pal/database": "file:../../packages/database"
+    "@parent-pal/database": "workspace:*"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",

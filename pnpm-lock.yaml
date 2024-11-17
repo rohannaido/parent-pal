@@ -11,7 +11,7 @@ importers:
   apps/cron:
     dependencies:
       '@parent-pal/database':
-        specifier: file:../../packages/database
+        specifier: workspace:*
         version: link:../../packages/database
       cors:
         specifier: ^2.8.5
