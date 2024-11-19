@@ -47,5 +47,6 @@ jobs:
               -v $(pwd)/firebase-parent-pal.json:/usr/src/app/firebase-parent-pal.json \
               -e GOOGLE_APPLICATION_CREDENTIALS=/usr/src/app/firebase-parent-pal.json \
               -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
+              --name parent-pal-cron \
               -p 4000:4000 \
               ${{ secrets.DOCKER_USERNAME }}/parent-pal-cron:latest
