@@ -29,3 +29,23 @@ jobs:
 
       - name: Verify Pushed Image
         run: docker pull ${{ secrets.DOCKER_USERNAME }}/parent-pal-cron:latest
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            sudo docker container prune -f || true
+            sudo docker image prune -a -f || true
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/parent-pal-cron:latest
+            sudo docker stop parent-pal-cron || true
+            sudo docker rm parent-pal-cron || true
+            sudo echo '${{ secrets.FIREBASE_CREDENTIALS }}' > ./firebase-parent-pal.json
+            sudo docker run -d \
+              -v $(pwd)/firebase-parent-pal.json:/usr/src/app/firebase-parent-pal.json \
+              -e GOOGLE_APPLICATION_CREDENTIALS=/usr/src/app/firebase-parent-pal.json \
+              -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
+              -p 4000:4000 \
+              ${{ secrets.DOCKER_USERNAME }}/parent-pal-cron:latest
