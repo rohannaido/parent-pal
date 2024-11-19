@@ -25,6 +25,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/parent-pal-cron:latest
+          target: cron
 
       - name: Verify Pushed Image
         run: docker pull ${{ secrets.DOCKER_USERNAME }}/parent-pal-cron:latest
