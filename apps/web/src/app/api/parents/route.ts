@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@parent-pal/database";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { createHash } from "crypto";
+import { sendPasswordSetupEmail } from "@/lib/send";
 
 export async function GET() {
     const session = await getServerSession(authOptions);
@@ -47,5 +49,19 @@ export async function POST(req: NextRequest) {
         },
     });
 
-    return NextResponse.json({ message: "Parent added" });
+    const token = createHash('sha256')
+        .update(`${email}${Date.now()}${process.env.SECRET_KEY}`)
+        .digest('hex');
+
+    await prisma.passwordSetup.create({
+        data: {
+            email,
+            token,
+            expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
+        }
+    });
+
+    await sendPasswordSetupEmail(email, token);
+
+    return NextResponse.json({ message: "Parent added and email sent!" });
 }
