@@ -11,6 +11,7 @@ import AppBar from "../AppBar";
 import ParentCards from "./ParentCards";
 import ReminderList from "./ReminderList";
 import { Reminder, User } from "@parent-pal/database";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function UserDashboard() {
     const [reminder, setReminder] = useState("");
@@ -18,6 +19,7 @@ export default function UserDashboard() {
     const [reminders, setReminders] = useState<Reminder[]>([]);
     const [date, setDate] = useState<Date | undefined>(undefined);
     const [time, setTime] = useState<string>("");
+    const [frequency, setFrequency] = useState<string>("once");
 
     const fetchReminders = async () => {
         const response = await fetch(`/api/reminders?userId=${selectedParent?.id}`);
@@ -41,11 +43,13 @@ export default function UserDashboard() {
                         title: reminder,
                         content: reminder,
                         dateTime: dateNew,
+                        frequency,
                     }),
                 });
                 setReminder("");
                 setDate(undefined);
                 setTime("");
+                setFrequency("once");
                 fetchReminders();
             } catch (error) {
                 console.error(error);
@@ -99,6 +103,17 @@ export default function UserDashboard() {
                                     />
                                 </div>
                             </div>
+                            <Select value={frequency} onValueChange={setFrequency}>
+                                <SelectTrigger className="w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                                    <SelectValue placeholder="Select frequency" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="once">Once</SelectItem>
+                                    <SelectItem value="daily">Daily</SelectItem>
+                                    <SelectItem value="weekly">Weekly</SelectItem>
+                                    <SelectItem value="monthly">Monthly</SelectItem>
+                                </SelectContent>
+                            </Select>
                             <Button
                                 onClick={setReminderForParent}
                                 className="w-full bg-blue-600 hover:bg-blue-700 text-white"

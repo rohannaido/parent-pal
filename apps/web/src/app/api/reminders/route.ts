@@ -14,6 +14,7 @@ const reminderSchema = z.object({
     title: z.string(),
     content: z.string(),
     dateTime: z.string().datetime(),
+    frequency: z.string(),
 });
 
 export async function POST(request: NextRequest) {
@@ -23,7 +24,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
     }
 
-    const { userId, title, content, dateTime } = parsedBody.data;
-    await prisma.reminder.create({ data: { userId, title, content, dateTime } });
+    const { userId, title, content, dateTime, frequency } = parsedBody.data;
+    await prisma.reminder.create({ data: { userId, title, content, dateTime, frequency } });
     return NextResponse.json({});
 }
